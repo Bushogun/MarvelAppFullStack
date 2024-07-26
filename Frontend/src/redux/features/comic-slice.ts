@@ -12,6 +12,9 @@ const comicSlice = createSlice({
     setUserID: (state, action) => {
       state.userID = action.payload;
     },
+    setUserName: (state, action) => {
+      state.userName = action.payload;
+    },
     setToken: (state, action: PayloadAction<string | null>) => {
       state.token = action.payload;
     },
@@ -36,6 +39,7 @@ const comicSlice = createSlice({
 export const {
   setIsLogged,
   setUserID,
+  setUserName,
   setToken,
   clearToken,
   setComics,

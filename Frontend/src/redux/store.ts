@@ -9,7 +9,7 @@ const preloadedState = (): PreloadedState<RootState> => {
       return { comic: JSON.parse(savedState) };
     }
   }
-  return { comic: { isLogged: false, userID: 0, token: null, comics: undefined, loading: false, specificComic: undefined, error: null } };
+  return { comic: { isLogged: false, userID: 0, userName: '', token: null, comics: undefined, loading: false, specificComic: undefined, error: null } };
 };
 
 const rootReducer = combineReducers({

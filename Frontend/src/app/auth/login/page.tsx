@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import styles from '@/app/auth/login/login.module.scss'
 import useApi from '@/configuration/useApi';
 import { useRouter } from 'next/navigation';
-import { setIsLogged, setToken, setUserID } from '@/redux/features/comic-slice';
+import { setIsLogged, setToken, setUserID, setUserName } from '@/redux/features/comic-slice';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 
 type responseLogin = {
@@ -27,7 +27,7 @@ function LoginPage() {
                 router.push('/dashboard');
                 dispatch(setToken(response.data.token));
                 dispatch(setUserID(response.data.usuario.id));
-
+                dispatch(setUserName(response.data.usuario.nombre));
             } else {
                 throw new Error(response.error || 'Error desconocido');
             }

@@ -3,6 +3,7 @@ import { IComicCard, Result } from "@/app/Components/Comics-list/interfaces/iCom
 export interface Store {
   isLogged: boolean,
   userID: number,
+  userName: '',
   token: string | null,
   comics: IComicCard | undefined,
   specificComic: Result | undefined,
@@ -13,6 +14,7 @@ export interface Store {
 export const initialStateComic: Store = {
   isLogged: false,
   userID: 0,
+  userName: '',
   token: null,
   comics: undefined,
   specificComic: undefined,
