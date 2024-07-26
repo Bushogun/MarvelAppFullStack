@@ -16,7 +16,7 @@ function Card({ comic, onHeartClick, isSaved }: CardProps) {
     const router = useRouter();
 
     const selectedComicHandler = () => {
-        // router.push(`/dashboard/${comicId}`);
+        router.push(`/dashboard/${comic.id}`);
     };
 
     const handleHeartClick = (event: React.MouseEvent) => {
