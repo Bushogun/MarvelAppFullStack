@@ -1,55 +1,65 @@
-'use client'
+'use client';
 import React, { useEffect, useState } from 'react';
-import { ISpecificComic } from '@/app/Components/Comics-list/interfaces/iSpecificComic';
+import { useRouter, usePathname } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
 import { setError } from '@/redux/features/comic-slice';
-import styles from './comic-details.module.scss'
+import styles from './comic-details.module.scss';
+import useApi from '@/configuration/useApi';
+import { IComicCard } from '@/app/Components/Comics-list/interfaces/iComicCard';
 
 const ComicDetails = () => {
+    const [comicDetails, setComicDetails] = useState<IComicCard | null>(null);
+    const { get } = useApi<IComicCard>(process.env.NEXT_PUBLIC_BACKEND_NODE_API || '');
     const dispatch = useAppDispatch();
-    const selectedProductId = useAppSelector(state => state.comicSlice.selectedComic);
-    const [productDetails, setProductDetails] = useState(null);
+    const token = useAppSelector(state => state.comic.token);
+    const pathname = usePathname();
 
-    useEffect(() => {
-        if (selectedProductId) {
-            fetchProductDetails();
-        }
-    }, [selectedProductId]);
+    const extractComicIdFromPathname = (pathname: string) => {
+        const parts = pathname.split('/');
+        return parts[parts.length - 1];
+    };
 
-    const fetchProductDetails = async () => {
+    const id = extractComicIdFromPathname(pathname);
+
+    const fetchComicDetails = async (comicId: string) => {
         try {
-            const productDetailsById = await fetchProductById(dispatch, selectedProductId);
-            setProductDetails(productDetailsById);
+            const response = await get(`${process.env.NEXT_PUBLIC_BACKEND_DASHBOARD}/${comicId}`, { Authorization: `Bearer ${token}` });
+            setComicDetails(response.data);
         } catch (error) {
-            dispatch(setError('ha ocurrido un error en el servidor'));
+            console.error('Error fetching data:', error);
+            dispatch(setError('Ha ocurrido un error en el servidor'));
         }
     };
 
+    useEffect(() => {
+        if (id) {
+            fetchComicDetails(id);
+        }
+    }, [id]);
+
     return (
         <div className={styles['details']}>
-            {productDetails && (
+            {comicDetails && (
                 <div className={styles['container-details']}>
-
                     <div className={styles['container-img']}>
-                        <img className={styles['card-img']}
-                            src={productDetails.image}
-                            alt={productDetails.title}
-                            title={productDetails.title} />
+                        <img
+                            className={styles['card-img']}
+                            src={`${comicDetails.data.results[0].thumbnail.path}.${comicDetails.data.results[0].thumbnail.extension}`}
+                            alt={comicDetails.data.results[0].title}
+                            title={comicDetails.data.results[0].title}
+                        />
                     </div>
 
                     <div className={styles['container-data']}>
-                        <h2 className={styles['title']}>{productDetails.title}</h2>
-                        <p className={styles['description']}>{productDetails.description}</p>
+                        <h2 className={styles['title']}>{comicDetails.data.results[0].title}</h2>
+                        <p className={styles['description']}>{comicDetails.data.results[0].description || 'No description available'}</p>
                         <div className={styles['category-container']}>
-                            <p className={styles['category']}>{productDetails.category}</p>
                         </div>
-                        <p className={styles['price']}>${productDetails.price}</p>
                     </div>
-
                 </div>
             )}
         </div>
     );
 };
 
-export default ProductDetails;
+export default ComicDetails;

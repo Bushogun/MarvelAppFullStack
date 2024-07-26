@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { FaUserCircle } from "react-icons/fa";
 import { MdOutlineLogin } from "react-icons/md";
 import { useAppSelector, useAppDispatch } from '@/redux/hooks';
-import { clearToken, setIsLogged } from '@/redux/features/comic-slice';
+import { clearToken, setIsLogged, setUserID, setUserName } from '@/redux/features/comic-slice';
 import styles from '@/app/Components/UserProfile/userProfile.module.scss'
 
 function UserProfile() {
@@ -20,6 +20,8 @@ function UserProfile() {
     const handleLogout = () => {
         dispatch(clearToken());
         dispatch(setIsLogged(false));
+        dispatch(setUserID(0));
+        dispatch(setUserName(''));
         setMenuVisible(false);
     }
 
