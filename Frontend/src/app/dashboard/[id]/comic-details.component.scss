@@ -1,0 +1,49 @@
+@use '../../../styles/colors.module.scss'as *;
+
+.container-details {
+    display: flex;
+    padding: 7rem;
+    color: $color__white;
+
+    .container-img {
+        .card-img {
+            max-width: 500px;
+            padding-right: 2rem;
+        }
+    }
+
+    .container-data {
+        .title {
+            font-size: 3rem;
+            font-weight: 700;
+            padding-bottom: 1rem;
+        }
+
+        .description {
+            font-size: 20px;
+            padding-bottom: 1rem;
+        }
+
+        .category-container {
+            padding-bottom: 2rem;
+            .category {
+                padding: 1rem;
+                font-weight: 700;
+                text-align: center;
+                color: $color__white;
+                background-color: $color__green--opacity;
+                padding-bottom: 1rem;
+
+            }
+        }
+
+        margin-bottom: 15px;
+
+        .price {
+            font-size: 30px;
+            color: $color__green;
+            padding-bottom: 1rem;
+        }
+
+    }
+}
